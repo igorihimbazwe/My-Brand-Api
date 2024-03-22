@@ -1,7 +1,6 @@
-// controllers/commentController.js
 const Blog = require("../models/Blog");
 const Comment = require("../models/Comment");
-
+const User = require("../models/User");
 // Add a new comment to a blog
 exports.addComment = async (req, res) => {
   const { content } = req.body;
@@ -19,6 +18,10 @@ exports.addComment = async (req, res) => {
     const blog = await Blog.findById(blogId);
     blog.comments.push(newComment._id);
     await blog.save();
+
+    // Query the user document and attach it to the comment object
+    const user = await User.findById(userId).select("firstName");
+    newComment.user = user;
 
     res.json({ msg: "Comment added successfully", comment: newComment });
   } catch (err) {
@@ -81,3 +84,4 @@ exports.deleteComment = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
+//fetch all comments

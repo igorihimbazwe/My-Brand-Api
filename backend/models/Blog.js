@@ -15,8 +15,8 @@ const blogSchema = new mongoose.Schema({
     required: true,
   },
   image: {
-    data: Buffer, // Changed to store image data as Buffer
-    contentType: String, // To store MIME type of the image
+    type: String,
+    required: false,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

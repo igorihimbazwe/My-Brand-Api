@@ -41,18 +41,33 @@ exports.deleteUser = async (req, res) => {
 // Get all blogs
 exports.getAllBlogs = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
+    const blogs = await Blog.find()
+      .populate({
+        path: "comments",
+        populate: {
+          path: "user",
+          select: "firstName -_id",
+        },
+      })
+      .exec();
 
-    if (!user.isAdmin) {
-      return res
-        .status(401)
-        .json({ msg: "Access denied. You are not an admin" });
-    }
+    const simplifiedBlogs = blogs.map((blog) => ({
+      _id: blog._id,
+      title: blog.title,
+      author: blog.author,
+      description: blog.description,
+      image: blog.image,
+      comments: blog.comments.map((comment) => ({
+        content: comment.content,
+        user: comment.user.firstName,
+      })),
+    }));
 
-    const blogs = await Blog.find();
-    res.json(blogs);
+    res.json(simplifiedBlogs);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
 };
+
+module.exports = exports;
