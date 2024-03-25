@@ -500,6 +500,186 @@
           }
         }
       }
+    },
+
+    "/api/blog/{blogId}/comment": {
+      "post": {
+        "tags": ["comment"],
+        "summary": "Add a comment to a blog",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "blogId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the blog to add comment to"
+          },
+          {
+            "in": "header",
+            "name": "x-auth-token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "JWT token for authenticated user"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "string"
+                  }
+                },
+                "required": ["comment"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Comment added successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Blog not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/blog/{blogId}/comment/{commentId}/reply": {
+      "post": {
+        "tags": ["comment"],
+        "summary": "Reply to a comment",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "blogId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the blog containing the comment"
+          },
+          {
+            "in": "path",
+            "name": "commentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the comment to reply to"
+          },
+          {
+            "in": "header",
+            "name": "x-auth-token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "JWT token for authenticated user"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reply": {
+                    "type": "string"
+                  }
+                },
+                "required": ["reply"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Reply added successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Comment not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/blog/{blogId}/comment/{commentId}": {
+      "delete": {
+        "tags": ["comment"],
+        "summary": "Delete a comment",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "blogId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the blog containing the comment"
+          },
+          {
+            "in": "path",
+            "name": "commentId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the comment to delete"
+          },
+          {
+            "in": "header",
+            "name": "x-auth-token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "JWT token for authenticated user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comment deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Comment not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
     }
   },
   "components": {
